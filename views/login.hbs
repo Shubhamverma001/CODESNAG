@@ -1,0 +1,119 @@
+{{> header}}
+{{!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <form method="POST" action="/login">
+        <div class="form-group">
+          <label for="username">Email</label>
+          <input type="email" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+          <label for="pass">Password</label>
+          <input type="password" class="form-control" id="pass" name="password">
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="identity" checked="checked" value="1">Client
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="identity" value="2">Developer
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="identity" value="3">Hacker
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="identity" value="4">Admin
+          </label>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> --}}
+<section id="hero" class="d-flex align-items-center">
+	<div class="container-fluid" data-aos="fade-up">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <h1>Better Digital Experience With CodeSnag</h1>
+          {{!-- <h2>We are team of talented designers making websites with Bootstrap</h2> --}}
+          <div><a href="#login" class="btn-get-started scrollto">Get Started</a></div>
+        </div>
+        <div class="col-xl-4 col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="150">
+          <img src="/images/hero-img.png" class="img-fluid animated" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+  <section id="login" class="d-flex align-items-center">
+<div class="container login-page-image">
+	<div class="d-flex justify-content-center h-100">
+    <form method="POST" action="/login" style="display:flex">
+		<div class="card">
+			<div class="card-header">
+				<h3>Sign In</h3>
+				<div class="d-flex justify-content-end social_icon">
+					<span><i class="fab fa-facebook-square"></i></span>
+					<span><i class="fab fa-google-plus-square"></i></span>
+					<span><i class="fab fa-twitter-square"></i></span>
+				</div>
+			</div>
+			<div class="card-body">
+				<form>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="username" name="username">
+				
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="password" name="password">
+					</div>
+          <div class="row align-items-center remember">
+						{{!-- <div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div> --}}
+						<input type="radio" class="form-control" name="identity" value="1">Client
+            <input type="radio" class="form-control" name="identity" value="2">Developer
+					</div>
+          <div class="row align-items-center remember">
+						{{!-- <div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div> --}}
+            <input type="radio" class="form-control" name="identity" value="3">Hacker
+            <input type="radio" class="form-control" name="identity" value="4">Admin
+					</div>
+					<div class="row align-items-center remember">
+						<input type="checkbox">Remember Me
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Login" class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+			{{!-- <div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Don't have an account?<a href="#">Sign Up</a>
+				</div>
+				<div class="d-flex justify-content-center">
+					<a href="#">Forgot your password?</a>
+				</div>
+			</div> --}}
+		</div>
+    </form>
+	</div>
+</div>
+</section>
+{{> footer}}

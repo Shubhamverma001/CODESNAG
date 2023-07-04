@@ -1,0 +1,505 @@
+{{> header}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <ul class="nav flex-column" style="border: 1px solid #343A40;height: 100vh;">
+        <br>
+        <center>
+          <figure class="figure">
+            <img src="/images/empty_profile.jpg" class="figure-img img-fluid rounded" width="100">
+            {{!-- <figcaption class="figure-caption">Avtar</figcaption> --}}
+          </figure>
+        </center>
+        {{!-- <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="requests();">Requests</a>
+        </li> --}}
+        <li class="nav-item" style="border-bottom:1px solid #343A40;border-top:1px solid #343A40;">
+          <a class="nav-link " href="#" onclick="$('#member').show();$('#project').hide();$('#projects').hide();">Add new Member</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="$('#member').hide();$('#project').show();$('#projects').hide();">Add new Project</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="retrieveList(1);">Ongoing Projects</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="retrieveList(2);">Completed Projects</a>
+        </li>
+        {{!-- <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="chatRetrieve();">Chats</a>
+        </li> --}}
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="/logout">Logout!</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-10">
+      <br><br>
+      {{!-- <ul class="list-group" id="req">
+        <ul class='nav nav-tabs nav-justified'>
+          <li class='nav-item'>
+            <a class='nav-link active' data-toggle='tab' href='#client'>Client</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' data-toggle='tab' href='#hack'>Hacker</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' data-toggle='tab' href='#dev'>Developer</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane container active" id="client">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>E-Mail</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Files</th>
+                  <th>Approve</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each data}}
+                  {{#each data.[0].files}}
+                    {{this}}
+                  {{/each}}
+                  {{#equal this.who 'client'}}
+                    <tr>
+                      <td>{{this.name}}</td>
+                      <td>{{this.email}}</td>
+                      <td style="display:none;">{{this.who}}</td>
+                      <td>{{this.title}}</td>
+                      <td>{{this.description}}</td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="files" onclick="admin(this);">Show Files</button></td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="approve" onclick="admin(this);">Approve</button></td>
+                    </tr>
+                  {{/equal}}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane container fade" id="hack">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>E-Mail</th>
+                  <th>Skills</th>
+                  <th>Files</th>
+                  <th>Approve</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each data}}
+                  {{#equal this.who 'hacker'}}
+                    <tr>
+                      <td>{{this.name}}</td>
+                      <td>{{this.email}}</td>
+                      <td style="display:none;">{{this.who}}</td>
+                      <td>{{this.skills}}</td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="files" onclick="admin(this);">Show Files</button></td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="approve" onclick="admin(this);">Approve</button></td>
+                    </tr>
+                  {{/equal}}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane container fade" id="dev">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>E-Mail</th>
+                  <th>Skills</th>
+                  <th>Files</th>
+                  <th>Approve</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each data}}
+                  {{#equal this.who 'developer'}}
+                    <tr>
+                      <td>{{this.name}}</td>
+                      <td>{{this.email}}</td>
+                      <td style="display:none;">{{this.who}}</td>
+                      <td>{{this.skills}}</td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="files" onclick="admin(this);">Show Files</button></td>
+                      <td><button type="button" class="btn btn-outline-success" data-id="{{this._id}}" id="approve" onclick="admin(this);">Approve</button></td>
+                    </tr>
+                  {{/equal}}
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ul> --}}
+      <ul class="list-group" id="projects">
+      
+      </ul>
+      <form style="display:none;" method="POST" action="/newClient" id="member">
+        <div class="form-check-inline" onclick="$('#member').attr('action', '/newClient');$('#hsk').hide();$('#dsk').hide();">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optradio" checked="checked">Client
+          </label>
+        </div>
+        <div class="form-check-inline" onclick="$('#member').attr('action', '/newHacker');$('#hsk').show();$('#dsk').hide();">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optradio">Hacker
+          </label>
+        </div>
+        <div class="form-check-inline" onclick="$('#member').attr('action', '/newDeveloper');$('#dsk').show();$('#hsk').hide();">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optradio">Developer
+          </label>
+        </div> 
+        <div class="form-group">
+          <label for="usr">Name:</label>
+          <input type="text" class="form-control" id="usr" name="usr">
+        </div>
+        <div class="form-group">
+          <label for="em">Email:</label>
+          <input type="email" class="form-control" id="em" name="em">
+        </div>
+        <div class="form-group">
+          <label for="pwd">Password:</label>
+          <input type="password" class="form-control" id="pwd" name="pwd">
+        </div>
+        <div class="form-group" id="dsk" style="display:none" >
+        <label for="developerskillset">Choose a Developer skillset:</label>
+        <select name="developerskillset" id="developerskillset" class="form-control">
+          <option value="nodejs">Node.js</option>
+          <option value="java">Java</option>
+          <option value="c++">C++</option>
+          <option value="python">Python</option>
+        </select>
+        </div>
+        <div class="form-group" id="hsk" style="display:none"  >
+        <label for="hackerskillset">Choose a Hacker skillset:</label>
+        <select name="hackerskillset" id="hackerskillset" class="form-control">
+          <option value="level1">LEVEL-1</option>
+          <option value="level2">LEVEL-2</option>
+          <option value="level3">LEVEL-3</option>
+          <option value="level4">LEVEL-4</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="wid">ID</label>
+          <input type="text" class="form-control" id="wid" name="wid">
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary mb-2" onclick="addMember();">Submit</button>
+        </div>
+      </form>
+      <form style="display:none;" method="POST" action="/addProject" id="project">
+        <div class="form-group">
+          <label for="pn">Project Name:</label>
+          <input type="text" class="form-control" id="pn" name="pn">
+        </div>
+        <div class="form-group">
+          <label for="pid">Project ID:</label>
+          <input type="text" class="form-control" id="pid" name="projectid">
+        </div>
+        <div class="form-group">
+          <label for="hid">Hacker User ID</label>
+          <div class="dropdown">
+            <input type="text" class="form-control " id="hid" name="hid" autocomplete="off">
+            <div class="dropdown-menu" id="hackerDrop" style="display:none;width:100%;">
+            </div>
+          </div>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="did">Developer User ID</label>
+          <div class="dropdown">
+            <input type="text" class="form-control" id="did" name="did" autocomplete="off">
+            <div class="dropdown-menu" id="devDrop" style="display:none;width:100%;">
+            
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cid">Client User ID</label>
+          <div class="dropdown">
+            <input type="text" class="form-control" id="cid" name="cid" autocomplete="off">
+            <div class="dropdown-menu" id="clientDrop" style="display:none;width:100%;">
+            
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="days">No.of Days:</label>
+          <input type="text" class="form-control" id="days" name="days">
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary mb-2" onclick="addProject();">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function admin(e){
+    var q = $(e).attr('data-id');
+    var t = $(e).parent("td").siblings('td');
+    if($(e).attr('id') === 'files'){
+      $.ajax({
+        url: '/reqCom',
+        type: 'GET',
+        data: {q: q, f:1},
+        success: function(e){
+          $("#projects").hide();
+          $("#projects").html("");
+          var t = '<table class="table table-bordered"><thead><tr><td>File name</td><td>Date</td><td>Download</td></tr></thead><tbody>';
+          for(var i in e){
+          	t+='<tr><td>'+e[i].originalname+'</td><td>'+new Date(e[i].Date)+'</td><td><a href="/download?q='+e[i].multer_name+'"><button type="button" class="btn btn-outline-success">Download</button></a></td></tr>';
+          }
+          t+='</tbody></table>';
+          $("#projects").show();
+          $("#projects").append(t);
+        }
+      }).fail(function() {
+        alert("error");
+      });
+    }
+    else{
+      $('#member').show();
+      $('#project').hide();
+      $('#projects').hide();
+      $("#usr").val(t[0].innerHTML);
+      $("#em").val(t[1].innerHTML);
+      if(t[2].innerHTML === 'client'){
+        $("input[type='radio']")[0].checked = true;
+      }
+      else if(t[2].innerHTML === 'hacker'){
+        $("input[type='radio']")[1].checked = true;
+      }
+      else{
+        $("input[type='radio']")[2].checked = true;
+      }
+    }
+  }
+  function requests(){
+  	$("#projects").hide();
+  	$("#member").hide();
+  }
+  function chatRetrieve(){
+    $.ajax({
+      url: '/getProjects',
+      type: 'GET',
+      success: function(e){
+        $("#project").hide();
+        $("#member").hide();
+        $("#projects").show();
+        $("#projects").html("");
+        for(var i in e){
+          $("#projects").append("<li class='list-group-item list-group-item-action list-group-item-primary'><a href='/chat/?pid="+e[i].projectid+"'><button class='btn btn-success'>"+e[i].name+"</button></a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div><br></li><br><br>");
+        }
+        $("#projects").append("</tbody></table>");
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    });
+  }
+  
+  function addProject(){
+    $("#project").submit();
+    $("#project")[0].reset();
+  }
+  function addMember(){
+    $("#member").submit();
+    $("#member")[0].reset();
+  }
+  $("#hid").keydown(function(e){
+    var x  = $("#hid").val();
+    $("#hackerDrop").html("");
+    if(e.which === 9 || e.keyCode === 9){
+      $("#hackerDrop").hide();
+    }
+    else{
+      $.ajax({
+        url: '/getHackers',
+        type: 'GET',
+        success: function(e){
+          if(e[0]!==undefined){
+            for(var i in e){
+              $("#hackerDrop").append("<li onclick='placeInText("+e[i]+", 1);' class='dropdown-item'>"+e[i]+"</li>");
+            }
+            $("#hackerDrop").show();
+          }
+          else{
+            alert('Add a hacker first to assign him to a project!');
+          }
+        }
+      })
+      .fail(function() {
+        console.log("error");
+      });
+    }
+  });
+  $("#did").keydown(function(e){
+    var x  = $("#did").val();
+    $("#devDrop").html("");
+    if(e.which === 9 || e.keyCode === 9){
+      $("#devDrop").hide();
+    }
+    else{
+      $.ajax({
+        url: '/getDevelopers',
+        type: 'GET',
+        success: function(e){
+          if(e[0]!==undefined){
+            for(var i in e){
+              $("#devDrop").append("<li onclick='placeInText("+e[i]+", 2);' class='dropdown-item'>"+e[i]+"</li>");
+            }
+            $("#devDrop").show();
+          }
+          else{
+            alert('Add a Developer first to assign him to a project!');
+          }
+        }
+      })
+      .fail(function() {
+        console.log("error");
+      });
+    }
+  });
+  $("#cid").keydown(function(e){
+    var x  = $("#cid").val();
+    $("#clientDrop").html("");
+    if(e.which === 9 || e.keyCode === 9){
+      $("#clientDrop").hide();
+    }
+    else{
+      $.ajax({
+        url: '/getClients',
+        type: 'GET',
+        success: function(e){
+          if(e[0]!==undefined){
+            for(var i in e){
+              $("#clientDrop").append("<li onclick='placeInText("+e[i]+", 3);' class='dropdown-item'>"+e[i]+"</li>");
+            }
+            $("#clientDrop").show();
+          }
+          else{
+            alert('Add a Client first to assign him to a project!');
+          }
+        }
+      })
+      .fail(function() {
+        console.log("error");
+      });
+    }
+  });
+  function placeInText(e, f){
+    console.log(e);
+    e = e.toString();
+    if(f ===1){
+      $("#hid").val(e);
+      $("#hackerDrop").hide();
+    }
+    else if(f === 2){
+      $("#did").val(e);
+      $("#devDrop").hide();
+    }
+    else if(f === 3){
+      $("#cid").val(e);
+      $("#clientDrop").hide();
+    }
+  }
+  function updateP(e){
+    var x = prompt('Input new Progress of this project!');
+    console.log(x);
+    if(x!==null && x<100){
+      $.ajax({
+        url: '/updateP',
+        type: 'GET',
+        data: {pid: e, x:x},
+        success: function(e){
+          retrieveList(1);
+        }
+      })
+      .fail(function() {
+        console.log("error");
+      });
+    }
+    else if(x==100){
+      if(confirm('Are you sure you want to mark this project under review? This is irreversible!')){
+        $.ajax({
+          url: '/updateStatus',
+          type: 'POST',
+          data: {pid: e},
+          success: function(e){
+            retrieveList(1);
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        });
+      }
+    }
+  }
+  function retrieveList(x) {
+    if(x === 1){
+      $.ajax({
+        url: '/getProjects',
+        type: 'GET',
+        success: function(e){
+          $("#project").hide();
+          $("#member").hide();
+          $("#projects").show();
+          $("#projects").html("");
+          for(var i in e){
+            var x = '';
+            if(e[i].progress!=100){
+              x = "<button type='button' class='btn btn-primary update' id='"+e[i].projectid+"' onclick='updateP(this.id);'>Update progress!</button>";
+            }
+            $("#projects").append("<a href='/selectProject?pid="+e[i].projectid+"'><li class='list-group-item list-group-item-action list-group-item-primary'>"+e[i].name+"</a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div><br>"+x+"</li><br><br>");
+            var t = '<table class="table"><thead><tr><th scope="col">Date</th><th scope="col">Who</th><th scope="col">ID</th><th scope="col">Download</th></tr></thead><tbody>';
+            if(e[i].files!==null){
+              for(var j in e[i].files){
+                t+='<tr><th scope="row">'+new Date(e[i].files[j].Date)+'</th><td>'+e[i].files[j].who+'</td><td>'+e[i].files[j].horid+'</td><td><a href="/download/?q='+e[i].files[j].multer_name+'"><button type="button" class="btn-primary btn">Download</button></a></td></tr>';
+              }
+            }
+            t+="</tbody></table>";
+            $("#projects").append(t);
+          }
+        }
+      }).fail(function(e) {
+        console.log("error"+e);
+      });
+    }
+    else{
+      $.ajax({
+      url: '/completedprojects',
+      type: 'GET',
+      success: function(e){
+        $("#project").hide();
+        $("#member").hide();
+        $("#projects").show();
+        $("#projects").html("");
+        for(var i in e){
+          var x = '';
+          if(e[i].progress!=100){
+            x = "<button type='button' class='btn btn-primary update' id='"+e[i].projectid+"' onclick='updateP(this.id);'>Update progress!</button>";
+          }
+          $("#projects").append("<a href='/selectProject?pid="+e[i].projectid+"'><li class='list-group-item list-group-item-action list-group-item-primary'>"+e[i].name+"</a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div><br>"+x+"</li><br><br>");
+          var t = '<table class="table"><thead><tr><th scope="col">Date</th><th scope="col">Who</th><th scope="col">ID</th><th scope="col">Download</th></tr></thead><tbody>';
+          if(e[i].files[0]!==undefined){
+            for(var j in e[i].files){
+              t+='<tr><th scope="row">'+new Date(e[i].files[j].Date)+'</th><td>'+e[i].files[j].who+'</td><td>'+e[i].files[j].horid+'</td><td><a href="/download/?q='+e[i].files[j].multer_name+'"><button type="button" class="btn-primary btn">Download</button></a></td></tr>';
+            }
+          }
+          $("#projects").append(t+"</tbody></table>");
+        }
+      }
+    }).fail(function(e) {
+      console.log("error"+e);
+    });
+    }
+  }
+</script>
+{{> footer}}

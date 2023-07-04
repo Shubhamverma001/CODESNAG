@@ -1,0 +1,35 @@
+{{> header}}
+{{#if client}}
+<script type="text/javascript">
+var x = prompt('Please rate the Hacker on the scale of 5 (5 being the best)');
+if(x>=0 && x<=5){
+	$.ajax({
+		url: '/rating',
+		type: 'GET',
+		data: {who: 'hacker', rate:x},
+		success: function(){
+			var y = prompt('Now rate the developer on the same scale of 5 (5 being the best)');
+			if(y>=0 && y<=5){
+				$.ajax({
+					url: '/rating',
+					type: 'GET',
+					data: {who: 'developer', rate:y},
+					success: function(){
+						history.go(-1);
+					}
+				}).fail(function() {
+					alert("error");
+				});
+			}
+		}
+	}).fail(function() {
+		alert("error");
+	});
+}
+</script>
+{{/if}}
+{{#if hacker}}
+
+{{/if}}
+{{#if developer}}
+{{/if}}

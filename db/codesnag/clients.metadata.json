@@ -1,0 +1,14 @@
+{
+    "options": {},
+    "indexes": [
+        {
+            "v": 2,
+            "key": {
+                "_id": 1
+            },
+            "name": "_id_",
+            "ns": "codesnag.clients"
+        }
+    ],
+    "uuid": "b014b21acac3453380f7a8664bf05785"
+}

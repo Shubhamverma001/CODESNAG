@@ -1,0 +1,147 @@
+{{> header}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <ul class="nav flex-column" style="border: 1px solid #343A40;height: 100vh;">
+        <br>
+        <center>
+          <figure class="figure">
+            <img src="/images/empty_profile.jpg" class="figure-img img-fluid rounded"  width="100">
+            {{!-- <figcaption class="figure-caption">Avtar</figcaption> --}}
+          </figure>
+        </center>
+        <div class="beforeProSel">
+          <li class="nav-item" style="border-bottom:1px solid #343A40;">
+            <a class="nav-link" href="#" onclick="retrieveProject();">Projects</a>
+          </li>
+        </div>
+        <div class="afterProSel" style="display:none;">
+          <li class="nav-item" style="border-bottom:1px solid #343A40;border-top:1px solid #343A40">
+            <a class="nav-link " href="#" onclick="upload();">Upload</a>
+            <form style="display:none;" method="POST" action="/upload" enctype="multipart/form-data">
+              <input type="file" name="upload">
+            </form>
+          </li>
+          <li class="nav-item" style="border-bottom:1px solid #343A40;">
+            <a class="nav-link" href="#" onclick="retrieveList();">File-History</a>
+          </li>
+          <li class="nav-item" style="border-bottom:1px solid #343A40;" id="chatLi">
+            
+          </li>
+        </div>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="/logout">Logout!</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-10">
+      <table class="table" style="display:none;">
+        <thead>
+          <tr class="afterProSel" style="display:none;">
+            <th scope="col">Id</th>
+            <th scope="col">File</th>
+            <th scope="col">Date-uploaded</th>
+            <th scope="col">Download</th>
+          </tr>
+          <tr class="beforeProSel">
+            <th scope="col">Id</th>
+          </tr>
+        </thead>
+        <tbody class="temp">
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+	function upload(){
+		$("form>input").click();
+		$("form>input").change(function(){
+			$("form").submit();
+		});
+	}
+  function retrieveList(){
+    $.ajax({
+      url: '/listall',
+      type: 'GET',
+      success: function(e){
+        $(".temp").html("");
+        if(e!=='Empty!'){
+          var str='';
+          for(var i in e){
+            str += "<tr><td>"+(parseInt(i, 10)+1)+"</td><td>"+e[i].file_name+"</td><td>"+new Date(e[i].Date)+"</td><td><a href='/download/?q="+e[i].multer_name+"'><button type='button' class='btn-primary btn'>Download</button></a></td></tr>";
+          }
+          $(".temp").html(str);
+          $("table").show();
+        }
+      }
+    }).fail(function(e){
+      console.log(e);
+    });
+  }
+  function retrieveProject(){
+    $.ajax({
+      url: '/getProjects',
+      type: 'GET',
+      success: function(e){
+        $(".temp").html("");
+        if(e!=='Empty!'){
+          var str= '';
+          for(var i in e){
+            str+='<tr><td><button class="btn btn-success" onclick="projectSelected('+e[i].projectid+');">'+e[i].name+'</button></td></tr>';
+          }
+          $(".temp").html(str);
+          $("table").show();
+        }
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    });
+  }
+  function projectSelected(e){
+    $(".beforeProSel").hide();
+    $(".afterProSel").show();
+    $.ajax({
+      url: '/selectProject',
+      type: 'GET',
+      data: {pid: e},
+      success: function(g){
+        $("#chatLi").html('<a class="nav-link" href="/chat/?pid='+e+'">Chats</a>');
+        $(".temp").html("");
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    });
+    
+  }
+  var countDownDate = new Date();
+  countDownDate.setMinutes(countDownDate.getMinutes()+2);
+  countDownDate.getTime();
+      var count = 0;
+      var x = setInterval(function(){
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        $("#minutes").html(minutes + "m");
+        $("#seconds").html(seconds + "s");
+        if(distance<0){
+          clearInterval(x);
+          $(".timer").html('<center>Timer OVER!</center>');
+        }
+        else{
+          if(count === 0){
+            $(".colon").html(':');
+            count = 1;
+          }
+          else{
+            $(".colon").html(' ');
+            count = 0;
+          }
+        }
+      }, 1000);
+  </script>
+{{> footer}}

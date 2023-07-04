@@ -1,0 +1,14 @@
+{
+    "options": {},
+    "indexes": [
+        {
+            "v": 2,
+            "key": {
+                "_id": 1
+            },
+            "name": "_id_",
+            "ns": "codesnag.projects"
+        }
+    ],
+    "uuid": "03f00dd3c68d4205966f5e1e74e4bd11"
+}

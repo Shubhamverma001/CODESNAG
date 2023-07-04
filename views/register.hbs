@@ -1,0 +1,53 @@
+{{> header}}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<form method="POST" enctype="multipart/form-data" action="/registeration">
+				<div class="form-check-inline">
+          			<label class="form-check-label" onclick="console.log('hi');$('.hackDev').hide();$('.client').show();">
+            			<input type="radio" class="form-check-input" name="identity" checked="checked" value="1">Client
+          			</label>
+        		</div>
+        		<div class="form-check-inline">
+          			<label class="form-check-label" onclick="$('.hackDev').show();$('.client').hide();">
+            			<input type="radio" class="form-check-input" name="identity" value="2">Hacker
+          			</label>
+        		</div>
+        		<div class="form-check-inline">
+          			<label class="form-check-label" onclick="$('.hackDev').show();$('.client').hide();">
+            			<input type="radio" class="form-check-input" name="identity" value="3">Developer
+          			</label>
+        		</div>
+				<div class="form-group" >
+					<label for="n">Name</label>
+					<input type="text" name="n" id="n" autocomplete="name" placeholder="Your name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="em">Email</label>
+					<input type="email" name="em" id="em" autocomplete="email" placeholder="Your Email" class="form-control">
+				</div>
+				<div class="form-group client">
+					<label for="ps">A title for the project></label>
+					<input type="text" name="ps" id="ps" autocomplete="name" placeholder="Title" class="form-control">
+				</div>
+				<div class="form-group client">
+					<label for="dp">Description of Project</label>
+					<input type="text" name="dp" id="dp" autocomplete="name" placeholder="Description" class="form-control">
+				</div>
+				<div class="form-group hackDev" style="display:none;">
+					<label for="dp">Skills</label>
+					<input type="text" name="sk" id="sk" autocomplete="name" placeholder="Your Skills" class="form-control">
+				</div>
+				<div class="input-group">
+					<div class="custom-file">
+						<input type="file" name="f" id="f" class="custom-file-input" multiple>
+						<label class="custom-file-label" for="f">Upload Files!</label>
+					</div>
+				</div>
+				<br>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+{{> footer}}

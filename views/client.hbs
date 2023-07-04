@@ -1,0 +1,166 @@
+{{> header}}
+<div class="container-fluid">
+  {{#if toast}}
+  <div class="toast" style="position: absolute; top: 80px; right: 30px; border: 4px solid black;" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    {{!-- <img src="..." class="rounded mr-2" alt="..."> --}}
+    <strong class="mr-auto">{{toasthead}}</strong>
+    {{!-- <small class="text-muted">just now</small> --}}
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+      &times;
+      {{!-- <span aria-hidden="true">&times;</span> --}}
+    </button>
+  </div>
+  <div class="toast-body" onclick="$('.toast').toast('hide')">
+    {{toastbody}}.
+  </div>
+  {{/if}}
+</div>
+  <div class="row">
+    <div class="col-2">
+      <ul class="nav flex-column" style="border: 1px solid #343A40;height: 100vh;">
+        <br>
+        <center>
+          <figure class="figure">
+            <img src="/images/empty_profile.jpg" class="figure-img img-fluid rounded" width="100">
+            {{!-- <figcaption class="figure-caption">Avtar</figcaption> --}}
+          </figure>
+        </center>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="$('#project').show();$('#projects').hide();">Request New Project</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="$('#projects').show();$('#project').hide();retrieveList(1);">Ongoing Projects</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="$('#projects').show();$('#project').hide();retrieveList(2);">Under Review Projects</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="#" onclick="$('#projects').show();$('#project').hide();retrieveList(3);">Completed Projects</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" href="/logout">Logout!</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-10">
+    	<br><br>
+    	<ul id="projects">
+    	</ul>
+      <form style="display:none;" method="POST" action="/addProjectClient" id="project">
+        <div class="form-group">
+          <label for="pn">Project Name:</label>
+          <input type="text" class="form-control" id="pn" name="pn">
+        </div>
+        <div class="form-group">
+          <label for="projectid">Project ID:</label>
+          <input type="text" class="form-control" id="projectid" name="projectid">
+        </div>
+        <div class="form-group">
+          <label for="experience">Experience(min yrs):</label>
+          <input type="number" class="form-control" id="experience" name="experience" min="0">
+        </div>
+        <div class="form-group">
+        <label for="developerskillset">Choose a Developer skillset:</label>
+        <select name="developerskillset" id="developerskillset" class="form-control">
+          <option value="nodejs">Node.js</option>
+          <option value="java">Java</option>
+          <option value="c++">C++</option>
+          <option value="python">Python</option>
+        </select>
+        </div>
+        <div class="form-group">
+        <label for="hackerskillset">Choose a Hacker skillset:</label>
+        <select name="hackerskillset" id="hackerskillset" class="form-control">
+          <option value="level1">LEVEL-1</option>
+          <option value="level2">LEVEL-2</option>
+          <option value="level3">LEVEL-3</option>
+          <option value="level4">LEVEL-4</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="days">No.of Days:</label>
+          <input type="text" class="form-control" id="days" name="days">
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary mb-2" onclick="addProject();">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function addProject(){
+    $("#project").submit();
+    $("#project")[0].reset();
+  }
+  function retrieveList(x){
+    if(x===1){
+      $.ajax({
+        url: '/getProjects',
+        type: 'GET',
+        data: {q:x},
+        success: function(e){
+          console.log(e);
+          $("#projects").show();
+          $("#projects").html("");
+          for(var i in e){
+            $("#projects").append("<a href='/selectProject?pid="+e[i].projectid+"'><li class='list-group-item list-group-item-action list-group-item-primary'>"+e[i].name+"     </a><a href='/chat/?pid="+e[i].projectid+"'><button class='btn btn-success' type='button'>Chat</button></a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div></li><br><br>");
+          }
+        }
+      }).fail(function(e){
+        console.log(e);
+      });
+    }
+    else if(x===2){
+      $.ajax({
+        url: '/getProjects',
+        type: 'GET',
+        data: {q:x},
+        success: function(e){
+          $("#projects").show();
+          $("#projects").html("");
+          $("#projects").append('<h4>You need to review a project in at most 24 hours beyond which the project will automatically be marked as Completed!</h4>')
+          for(var i in e){
+            $("#projects").append("<a href='/selectProject?pid="+e[i].projectid+"'><li class='list-group-item list-group-item-action list-group-item-primary'>"+e[i].name+"</a>        <a href='/chat/?pid="+e[i].projectid+"'><button class='btn btn-success' type='button'>Chat</button></a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div><br><a href='/updatestatus1?pid="+e[i].projectid+"'><button class='btn btn-success'>Compelete?</button></a></li><br><br>");
+            var t = '<table class="table"><thead><tr><th scope="col">Date</th><th scope="col">Who</th><th scope="col">ID</th><th scope="col">Download</th></tr></thead><tbody>';
+            if(e[i].files!==null){
+              for(var j in e[i].files){
+                t+='<tr><th scope="row">'+new Date(e[i].files[j].Date)+'</th><td>'+e[i].files[j].who+'</td><td>'+e[i].files[j].horid+'</td><td><a href="/download/?q='+e[i].files[j].multer_name+'"><button type="button" class="btn-primary btn">Download</button></a></td></tr>';
+              }
+            }
+            t+="</tbody></table>";
+            $("#projects").append(t);
+          }
+        }
+      }).fail(function(e){
+        console.log(e);
+      });
+    }
+    else{
+      $.ajax({
+        url: '/getProjects',
+        type: 'GET',
+        data: {q:x},
+        success: function(e){
+          $("#projects").show();
+          $("#projects").html("");
+          for(var i in e){
+            $("#projects").append("<a href='/selectProject?pid="+e[i].projectid+"'><li class='list-group-item list-group-item-action list-group-item-primary'>"+e[i].name+"     </a><a href='/chat/?pid="+e[i].projectid+"'><button class='btn btn-success' type='button'>Chat</button></a><br><br><div class='progress'><div class='progress-bar progress-bar-striped progress-bar-animated' style='width:"+e[i].progress+"%''>"+e[i].progress+"%</div></div></li><br><br>");
+            var t = '<table class="table"><thead><tr><th scope="col">Date</th><th scope="col">Who</th><th scope="col">ID</th><th scope="col">Download</th></tr></thead><tbody>';
+            if(e[i].files!==null){
+              for(var j in e[i].files){
+                t+='<tr><th scope="row">'+new Date(e[i].files[j].Date)+'</th><td>'+e[i].files[j].who+'</td><td>'+e[i].files[j].horid+'</td><td><a href="/download/?q='+e[i].files[j].multer_name+'"><button type="button" class="btn-primary btn">Download</button></a></td></tr>';
+              }
+            }
+            t+="</tbody></table>";
+            $("#projects").append(t);
+          }
+        }
+      }).fail(function(e){
+        console.log(e);
+      });
+    }
+  }
+</script>
+{{> footer}}

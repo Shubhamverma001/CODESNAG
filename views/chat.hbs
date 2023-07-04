@@ -1,0 +1,99 @@
+{{> header}}
+<script src="/socket.io/socket.io.js"></script>
+<script>var socket = io.connect('/');</script>
+<style type="text/css">
+#chats { list-style-type: none; margin: 0; padding: 0; }
+#chats li { padding: 5px 10px; }
+#chats li:nth-child(odd) { background: black; }
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <ul class="nav flex-column" style="border: 1px solid #343A40;height: 100vh;">
+        <br>
+        <center>
+          <figure class="figure">
+            <img src="/images/empty_profile.jpg" class="figure-img img-fluid rounded"  width="100">
+            {{!-- <figcaption class="figure-caption">Avtar</figcaption> --}}
+          </figure>
+        </center>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" onclick="closeChat();">Close Chat session!</a>
+        </li>
+        <li class="nav-item" style="border-bottom:1px solid #343A40;">
+          <a class="nav-link" onclick="logout();">Logout!</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-10">
+      <br><br>
+      <ul class="list-group" id="chats">
+
+      </ul>
+      <div>
+        <div style="bottom:0;position:fixed;width:100%;">
+         <input type="text" name="chat" class="form-control" style="width:90%;"><button class="btn btn-success" type="submit" style="width:9%;" onclick="chatingNow();">Send!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var c = 0;
+  $(document).ready(function() {
+    socket.emit('usersConnect');
+  });
+  var id = '';
+  socket.on('connectionConfirm', function(data){
+    if(c===0){
+      c = 1;
+      for(var i in data){
+        if(data[i].identity == 3){
+          data[i].who = 'hacker';
+        }
+        else if(data[i].identity == 2){
+          data[i].who = 'developer';
+        }
+        else if(data[i].identity == 1){
+          data[i].who = 'client';
+        }
+        else if(data[i].identity == 4){
+          data[i].who = 'admin';
+          data[i].name='';
+        }
+        $("#chats").append('<li>'+data[i].name+'('+data[i].who+') says:-         '+data[i].message+'</li>');
+      }
+    }
+  });
+  function chatingNow(){
+      if($("input[name='chat']").val() !== ''){
+        socket.emit('adminChat', $("input[name='chat']").val());
+      }
+      $("input[name='chat']").val(" ");
+  }
+  socket.on('chating', function(d){
+      if(d.identity == 3){
+        d.who = 'hacker';
+      }
+      else if(d.identity == 2){
+        d.who = 'developer';
+      }
+      else if(d.identity == 1){
+        d.who = 'client';
+      }
+      else if(d.identity == 4){
+        d.who = 'admin';
+        d.name = '';
+      }
+      $("#chats").append('<li>'+d.name+'('+d.who+') says:-         '+d.message+'</li>');
+  });
+  function closeChat(){
+      socket.emit('closeAdminSession');
+      history.go(-1);
+  }
+  function logout(){
+      socket.emit('closeAdminSession');
+      window.location.assign('/logout');
+  }
+</script>
+{{> footer}}
